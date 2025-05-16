@@ -5,24 +5,28 @@ puts "Total journalistes : #{journalists.length}"
 
 # 2. Affiche le handle avec le plus petit nombre de caractères
 puts "Nom le plus court : #{journalists.min_by(&:length)}"
+#&:length est une façon rapide de dire : "mesure la longueur de chaque nom".
 
 # 3. Crée un nouveau tableau 'clean' où chaque handle est nettoyé en supprimant tout ce qui n’est pas une lettre (a-z ou A-Z)
 clean = journalists.map { |name| name.gsub(/[^a-zA-Z]/, "") }
+#gsub = global substitution => remplace tout ce qui n’est pas une lettre majuscule ou minuscule.
 
 # 4. Compte combien de handles nettoyés ont exactement 5 lettres
 count_five = clean.count { |name| name.length == 5 }
 puts "Nombre de noms de 5 lettres : #{count_five}"
 
 # 5. Compte combien de handles ont une majuscule juste après le caractère '@' (le deuxième caractère de la chaîne)
-count = journalists.count { |name| name[1] =~ /[A-Z]/ }
+count = journalists.count { |name| name[1] =~ /[A-Z]/ } # regarde les lettre en majuscule a partir du 2eme caractere
 puts "Nombre de noms commençons avec une majuscule: #{count}"
 
 # 6. Trie la liste des handles par ordre alphabétique (sans tenir compte de la casse)
-sorted = journalists.sort_by { |name| name.downcase }
+sorted = journalists.sort_by { |name| name.downcase } #trier la liste des noms, mais sans faire attention aux majuscules ou minuscules
 puts sorted
 
 # 7. Trie la liste des handles par taille (du plus court au plus long)
-sorted_by_length = journalists.sort_by(&:length)
+sorted_by_length = journalists.sort_by(&:length) #trier la liste des noms en fonction de la longueur de chaque nom
+#Le & devant :length est une raccourci pour dire :
+#“Prends la méthode length et applique-la à chaque élément de la liste.”
 
 # Affiche les 10 premiers handles triés par longueur pour vérification
 puts "Handles triés par longueur (les 10 premiers) :"
@@ -30,19 +34,19 @@ puts sorted_by_length.first(10)
 puts "..."
 
 # 8. Trouve la position (index) de '@epenser' dans la liste triée par longueur
-position = sorted_by_length.index("@epenser")
-puts "\nPosition de '@epenser' dans la liste triée par taille : #{position}"
+position = sorted_by_length.index("@epenser") #cherche où se trouve le nom '@epenser' dans la liste
+puts "\nPosition de '@epenser' dans la liste triée par taille : #{position}" #\n nouvelle ligne
 
 # 9. Crée un hash pour compter la répartition des handles par taille
-distribution = Hash.new(0)
+distribution = Hash.new(0) #ranger des chiffres, un chiffre pour chaque longueur de nom et 0 si il connais pas le chiffre
 
 # Pour chaque handle, incrémente le compteur correspondant à la longueur du handle
 journalists.each do |handle|
-  distribution[handle.length] += 1
+  distribution[handle.length] += 1 #analyser chaque nom et les ajouter a chaque tour 
 end
 
 # Affiche la répartition des handles par taille, triée par taille croissante
 puts "\nRépartition des handles par taille :"
-distribution.sort.each do |length, count|
-  puts "#{length} caractères : #{count} handles"
+distribution.sort.each do |length, count| #trier et lire chaque taille et le nombre de nom
+  puts "#{length} caractères : #{count} handles" #affiche par taille  et combien de noms font cette taille
 end
